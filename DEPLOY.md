@@ -37,6 +37,8 @@ This guide will help you deploy your static Astro site to Cloudflare Pages.
    - **Build command**: `pnpm build` (or `npm run build`)
    - **Build output directory**: `dist`
    - **Root directory**: `/` (leave as default)
+   - **Deploy command**: Set to `true` (if the field is required - this is a no-op command)
+   - **Non-production branch deploy command**: Set to `true` (if the field is required)
 
 5. **Click "Save and Deploy"**
 
@@ -101,4 +103,17 @@ Your static site is built to the `dist/` directory, which contains:
 - **Build fails**: Check the build logs in Cloudflare Dashboard
 - **404 errors**: Ensure `dist` is set as the build output directory
 - **Assets not loading**: Verify the `site` URL in `astro.config.mjs` matches your Cloudflare Pages URL
+- **"wrangler: not found" error**: 
+  - Go to your Pages project settings in Cloudflare Dashboard
+  - Navigate to **Settings** → **Builds & deployments** → **Build configuration**
+  - Change **Deploy command** from `npx wrangler deploy` to `true`
+  - Change **Non-production branch deploy command** from `npx wrangler versions upload` to `true`
+  - The `true` command is a no-op that always succeeds - Cloudflare Pages automatically deploys static files from the build output directory
+
+- **Seeing "Hello world" page instead of your site**:
+  - **Check the domain**: Cloudflare Pages uses `*.pages.dev` domains, NOT `*.workers.dev`. If you're visiting a `workers.dev` domain, you're looking at a Workers project, not Pages.
+  - **Verify project type**: In Cloudflare Dashboard, go to **Workers & Pages** → **Overview**. Make sure your project is listed under **Pages**, not **Workers**.
+  - **Check build output directory**: In your Pages project settings → **Builds & deployments** → **Build configuration**, ensure **Build output directory** is set to `dist` (not empty).
+  - **Verify build succeeded**: Check the deployment logs to ensure the build completed successfully and files were generated in the `dist` directory.
+  - **If project is Workers instead of Pages**: You need to create a new **Pages** project (not Workers). Go to **Workers & Pages** → **Create application** → **Pages** tab → **Connect to Git**.
 
