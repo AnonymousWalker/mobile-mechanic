@@ -1,6 +1,6 @@
-# Cloudflare Pages Deployment Guide
+# Cloudflare Workers Deployment Guide
 
-This guide will help you deploy your static Astro site to Cloudflare Pages.
+This guide will help you deploy your static Astro site to Cloudflare Workers with static assets.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This guide will help you deploy your static Astro site to Cloudflare Pages.
 1. **Push your code to GitHub** (if not already done):
    ```bash
    git add .
-   git commit -m "Configure for Cloudflare Pages deployment"
+   git commit -m "Configure for Cloudflare Workers deployment"
    git push origin dev
    ```
 
@@ -22,7 +22,7 @@ This guide will help you deploy your static Astro site to Cloudflare Pages.
    - Navigate to: https://dash.cloudflare.com/
    - Go to **Workers & Pages** → **Overview**
    - Click **Create application**
-   - Select the **Pages** tab
+   - Select the **Workers** tab (not Pages)
    - Click **Connect to Git**
 
 3. **Connect your repository**:
@@ -33,48 +33,53 @@ This guide will help you deploy your static Astro site to Cloudflare Pages.
 4. **Configure build settings**:
    - **Project name**: `josephmm`
    - **Production branch**: `dev` (or `main` if you prefer)
-   - **Framework preset**: `Astro`
-   - **Build command**: `pnpm build` (or `npm run build`)
-   - **Build output directory**: `dist`
-   - **Root directory**: `/` (leave as default)
-   - **Deploy command**: Set to `true` (if the field is required - this is a no-op command)
-   - **Non-production branch deploy command**: Set to `true` (if the field is required)
+   - **Build command**: `pnpm build`
+   - **Deploy command**: `npx wrangler deploy`
+   - **Non-production branch deploy command**: `npx wrangler deploy`
 
 5. **Click "Save and Deploy"**
 
 6. **Update your site URL** in `astro.config.mjs`:
-   - After deployment, Cloudflare will provide you with a URL like: `https://josephmm.pages.dev`
-   - Update the `site` field in `astro.config.mjs` with your actual Cloudflare Pages URL
+   - After deployment, Cloudflare will provide you with a URL like: `https://josephmm.workers.dev`
+   - Update the `site` field in `astro.config.mjs` with your actual Cloudflare Workers URL
 
-### Method 2: Deploy via Wrangler CLI
+### Method 2: Deploy via Wrangler CLI (Local)
 
-1. **Install Wrangler CLI** (if not already installed):
-   ```bash
-   pnpm add -D wrangler
-   ```
-
-2. **Login to Cloudflare**:
+1. **Login to Cloudflare** (if not already logged in):
    ```bash
    npx wrangler login
    ```
 
-3. **Build your site**:
+2. **Build and deploy**:
+   ```bash
+   pnpm deploy
+   ```
+   
+   Or manually:
    ```bash
    pnpm build
-   ```
-
-4. **Deploy to Cloudflare Pages**:
-   ```bash
-   npx wrangler pages deploy dist --project-name=josephmm
+   npx wrangler deploy
    ```
 
 ## Custom Domain Setup
 
-1. In Cloudflare Dashboard, go to your Pages project
-2. Click on **Custom domains**
-3. Click **Set up a custom domain**
-4. Enter your domain name
-5. Follow the DNS configuration instructions
+1. In Cloudflare Dashboard, go to your Workers project
+2. Click on **Triggers** → **Routes**
+3. Click **Add route**
+4. Enter your domain pattern (e.g., `yourdomain.com/*`)
+5. Or add routes in `wrangler.jsonc`:
+   ```jsonc
+   "routes": [
+     { 
+       "pattern": "yourdomain.com", 
+       "custom_domain": true 
+     },
+     { 
+       "pattern": "www.yourdomain.com", 
+       "custom_domain": true 
+     }
+   ]
+   ```
 
 ## Environment Variables (if needed)
 
@@ -101,19 +106,16 @@ Your static site is built to the `dist/` directory, which contains:
 ## Troubleshooting
 
 - **Build fails**: Check the build logs in Cloudflare Dashboard
-- **404 errors**: Ensure `dist` is set as the build output directory
-- **Assets not loading**: Verify the `site` URL in `astro.config.mjs` matches your Cloudflare Pages URL
+- **404 errors**: Ensure `dist` directory exists and contains your built files after running `pnpm build`
+- **Assets not loading**: Verify the `site` URL in `astro.config.mjs` matches your Cloudflare Workers URL (`https://josephmm.workers.dev`)
 - **"wrangler: not found" error**: 
-  - Go to your Pages project settings in Cloudflare Dashboard
-  - Navigate to **Settings** → **Builds & deployments** → **Build configuration**
-  - Change **Deploy command** from `npx wrangler deploy` to `true`
-  - Change **Non-production branch deploy command** from `npx wrangler versions upload` to `true`
-  - The `true` command is a no-op that always succeeds - Cloudflare Pages automatically deploys static files from the build output directory
+  - Make sure `wrangler` is installed: `pnpm add -D wrangler`
+  - Or use `npx wrangler deploy` instead of just `wrangler deploy`
 
 - **Seeing "Hello world" page instead of your site**:
-  - **Check the domain**: Cloudflare Pages uses `*.pages.dev` domains, NOT `*.workers.dev`. If you're visiting a `workers.dev` domain, you're looking at a Workers project, not Pages.
-  - **Verify project type**: In Cloudflare Dashboard, go to **Workers & Pages** → **Overview**. Make sure your project is listed under **Pages**, not **Workers**.
-  - **Check build output directory**: In your Pages project settings → **Builds & deployments** → **Build configuration**, ensure **Build output directory** is set to `dist` (not empty).
-  - **Verify build succeeded**: Check the deployment logs to ensure the build completed successfully and files were generated in the `dist` directory.
-  - **If project is Workers instead of Pages**: You need to create a new **Pages** project (not Workers). Go to **Workers & Pages** → **Create application** → **Pages** tab → **Connect to Git**.
+  - **Verify wrangler.jsonc exists**: Make sure `wrangler.jsonc` is in the root directory with the correct `assets.directory` set to `./dist`
+  - **Check worker.js**: Ensure `src/worker.js` exists and is properly configured
+  - **Verify build succeeded**: Check the deployment logs to ensure the build completed successfully and files were generated in the `dist` directory
+  - **Check ASSETS binding**: The worker uses `env.ASSETS` binding - make sure `wrangler.jsonc` has the assets configuration
+  - **Redeploy**: After making changes to `wrangler.jsonc` or `worker.js`, rebuild and redeploy
 

@@ -1,0 +1,21 @@
+{
+  "name": "josephmm",
+  "compatibility_date": "2025-01-01",
+  "main": "src/worker.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+  // Add custom domains here if needed:
+  // "routes": [
+  //   { 
+  //     "pattern": "yourdomain.com", 
+  //     "custom_domain": true 
+  //   }
+  // ]
+}
+

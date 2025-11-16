@@ -8,6 +8,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "pnpm build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "tailwindcss": "^4.0.14"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^12.6.10"
+    "@astrojs/cloudflare": "^12.6.10",
+    "wrangler": "^3.114.15"
   }
 }
