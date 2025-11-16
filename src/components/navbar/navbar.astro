@@ -3,16 +3,16 @@ import Container from "@/components/container.astro";
 import Link from "@/components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
+import { Icon } from "astro-icon/components";
 
 const menuitems = [
   {
     title: "Services",
     path: "#",
     children: [
-      { title: "Action", path: "/" },
-      { title: "Another action", path: "#" },
-      { title: "Dropdown Submenu", path: "#" },
-      { title: "404 Page", path: "/404" },
+      { title: "Oil Change", path: "#" },
+      { title: "Tune Up", path: "#" },
+      { title: "Repair Services", path: "#" },
     ],
   },
   {
@@ -73,7 +73,14 @@ const menuitems = [
     </Astronav>
     <div>
       <div class="hidden lg:flex items-center gap-4">
-        <Link href="#" size="md">Book Now</Link>
+        <a 
+          href="tel:407-666-3487" 
+          class="flex items-center gap-2 px-4 py-2 text-white font-bold rounded-md transition-colors hover:opacity-90"
+          style={`background-color: rgb(4 76 127);`}>
+          <Icon class="w-5 h-5" name="bx:bxs-phone" />
+          <span class="text-xl tracking-wide">407-666-3487</span>
+        </a>
+        <!-- <Link href="tel:407-666-3487" size="md">Book Now</Link> -->
       </div>
     </div>
   </header>
