@@ -9,13 +9,16 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
-  }
-  // Add custom domains here if needed:
-  // "routes": [
-  //   { 
-  //     "pattern": "yourdomain.com", 
-  //     "custom_domain": true 
-  //   }
-  // ]
+  },
+  "routes": [
+    { 
+      "pattern": "jfmobilemechanic.com", 
+      "custom_domain": true 
+    },
+    { 
+      "pattern": "www.jfmobilemechanic.com", 
+      "custom_domain": true 
+    }
+  ]
 }
 
