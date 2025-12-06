@@ -12,7 +12,7 @@ import { Icon } from "astro-icon/components";
   <div class="relative z-2 text-center px-4">
     <h1
       class="text-5xl lg:text-6xl xl:text-7xl font-bold max-w-3xl lg:tracking-tight xl:tracking-tighter text-white drop-shadow-lg">
-      Affordable and Reliable Auto Repair
+      Affordable and Reliable Mobile Mechanic
     </h1>
     <p class="text-lg mt-4 text-white/90 max-w-xl mx-auto drop-shadow-md">
       Fast, friendly, and affordable mobile mechanic services in Orlando—get expert car care right at your doorstep!
@@ -20,10 +20,10 @@ import { Icon } from "astro-icon/components";
     <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
       <Link
         href="tel:407-666-3487"
-        class="flex gap-1 items-center justify-center"
+        class="flex gap-2 items-center justify-center text-white border-2 border-transparent font-semibold hero-cta-button px-6 py-3 text-xl rounded-lg"
       >
-        <Icon class="text-white w-5 h-5" name="bx:bxs-phone" />
-        Book Service
+        <Icon class="text-white w-6 h-6" name="bx:bxs-phone" />
+        Call Us Now
       </Link>
       <!-- <Link
         size="lg"
@@ -37,4 +37,12 @@ import { Icon } from "astro-icon/components";
       </Link> -->
     </div>
   </div>
+  <style>
+    a.hero-cta-button {
+      background-color: rgb(179, 82, 82);
+    }
+    a.hero-cta-button:hover {
+      background-color: rgb(160, 70, 70);
+    }
+  </style>
 </main>
