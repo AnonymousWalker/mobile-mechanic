@@ -13,7 +13,7 @@ export interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/thumbnail.jpg",
+  "/man-mechanic.png",
   Astro.site
 ).toString();
 
@@ -44,7 +44,7 @@ const makeTitle = title
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `Orlando Mobile Mechanic | Affordable Auto Repair in Orlando`,
+          title: `JF Mobile Mechanic | Affordable Auto Repair in Orlando`,
           image: resolvedImageWithDomain,
         },
         image: {
