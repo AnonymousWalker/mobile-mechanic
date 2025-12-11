@@ -7,7 +7,7 @@ import icon from "astro-icon";
 // https://astro.build/config
 export default defineConfig({
   // Static site output - no adapter needed for Cloudflare Pages
-  site: "https://astroship.web3templates.com", // Update this with your Cloudflare Pages domain
+  site: "https://jfmobilemechanic.com", // Cloudflare Pages / custom domain
   integrations: [mdx(), sitemap(), icon()],
   vite: {
     plugins: [tailwindcss()],
